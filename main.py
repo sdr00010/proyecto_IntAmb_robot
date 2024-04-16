@@ -18,7 +18,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), './inter
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 
-# Crear el objeto del robot.
+""" # Crear el objeto del robot.
 robot_LEGO = EV3Brick()
 
 
@@ -31,4 +31,4 @@ test_motor = Motor(Port.A)
 test_motor.run_target(500, 90)
 
 # 3. Play another beep sound.
-ev3.speaker.beep(frequency=1000, duration=500)
+ev3.speaker.beep(frequency=1000, duration=500) """
