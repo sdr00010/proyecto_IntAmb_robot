@@ -16,6 +16,7 @@ import os
 import sys
 import time
 from movimiento import avanzar as avn
+from movimiento import girar as gr
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,14 +24,26 @@ from movimiento import avanzar as avn
 robot_LEGO = EV3Brick()
 left_motor = Motor(Port.A)  # motor rueda izquierda
 right_motor = Motor(Port.D) # motor rueda derecha
+gyro = GyroSensor(Port.S1) # giroscopio
+
 
 # Prueba: avanzar hacia delante
-avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 250)
+avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
 
 wait(1000)
 
 # Prueba: avanzar hacia atrás
-avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 250)
+avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 300)
+
+# Prueba: girar a la derecha
+gr.girar_derecha(robot_LEGO, left_motor, right_motor, 90)
+
+# Prueba: girar a la izquierda
+gr.girar_izquierda(robot_LEGO, left_motor, right_motor, 90)
+
+# Prueba: giro con el giroscopio
+gr.girar_derecha_gyro(robot_LEGO, right_motor, gyro, 90)
+
 
 """ 
 # 1. Make a sound.
