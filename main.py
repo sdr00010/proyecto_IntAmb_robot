@@ -17,6 +17,7 @@ import sys
 import time
 from movimiento import avanzar as avn
 from movimiento import girar as gr
+from movimiento import accionPaquete as ap
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,25 +25,31 @@ from movimiento import girar as gr
 robot_LEGO = EV3Brick()
 left_motor = Motor(Port.A)  # motor rueda izquierda
 right_motor = Motor(Port.D) # motor rueda derecha
+pala_motor = Motor(Port.B)
 gyro = GyroSensor(Port.S1) # giroscopio
 
 
 # Prueba: avanzar hacia delante
-avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
+#avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
 
-wait(1000)
+#wait(1000)
 
 # Prueba: avanzar hacia atrás
-avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 300)
+#avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 300)
 
 # Prueba: girar a la derecha
-gr.girar_derecha(robot_LEGO, left_motor, right_motor, 90)
+#gr.girar_derecha(robot_LEGO, left_motor, right_motor, 90)
 
 # Prueba: girar a la izquierda
-gr.girar_izquierda(robot_LEGO, left_motor, right_motor, 90)
+#gr.girar_izquierda(robot_LEGO, left_motor, right_motor, 90)
 
 # Prueba: giro con el giroscopio
-gr.girar_derecha_gyro(robot_LEGO, right_motor, gyro, 90)
+#gr.girar_derecha_gyro(robot_LEGO, right_motor, gyro, 90)
+
+# Prueba: coger paquete
+ap.cogerPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
+avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
+ap.dejarPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
 
 
 """ 

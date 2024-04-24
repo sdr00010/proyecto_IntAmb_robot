@@ -17,6 +17,6 @@ def girar_izquierda(robot: EV3Brick, left_motor: Motor, right_motor: Motor, grad
     #robot.speaker.beep(frequency=800, duration=500)
 
 def girar_derecha_gyro(robot: EV3Brick, right_motor: Motor, gyroSensor: GyroSensor, grados: float):
-    print("Velocidad de giro: " gyroSensor.speed())
+    print("Velocidad de giro: ", gyroSensor.speed())
     right_motor.dc(gyroSensor.angle(grados))
     
