@@ -15,6 +15,7 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import os
 import sys
 import time
+from interno import utils
 from movimiento import avanzar as avn
 
 # ---------------------------------------------------------------------------------------------------------------------------------
@@ -24,23 +25,24 @@ robot_LEGO = EV3Brick()
 left_motor = Motor(Port.A)  # motor rueda izquierda
 right_motor = Motor(Port.D) # motor rueda derecha
 
-# Prueba: avanzar hacia delante
-avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 250)
+# ---------------------------------------------------------------------------------------------------------------------------------
 
-wait(1000)
 
-# Prueba: avanzar hacia atrás
-avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 250)
+# MAIN DE PRUEBAS
 
-""" 
-# 1. Make a sound.
-ev3.speaker.beep()
+# Prueba: avanzar 1 casillas hacia delante
+avn.adelante_N_casillas(robot_LEGO, left_motor, right_motor, 1)
 
-# 2. Initialize a motor at port B.
-test_motor = Motor(Port.A)
-# Run the motor up to 500 degrees per second. To a target angle of 90 degrees.
-test_motor.run_target(500, 90)
+robot_db = DriveBase(left_motor, right_motor, wheel_diameter=utils.CONFIG["parametros"]["wheel_diameter"], axle_track=utils.CONFIG["parametros"]["axle_track"])
+robot_db.turn(90)
 
-# 3. Play another beep sound.
-ev3.speaker.beep(frequency=1000, duration=500) 
-"""
+# Prueba: avanzar 2 casillas hacia delante
+avn.adelante_N_casillas(robot_LEGO, left_motor, right_motor, 2)
+
+robot_db = DriveBase(left_motor, right_motor, wheel_diameter=utils.CONFIG["parametros"]["wheel_diameter"], axle_track=utils.CONFIG["parametros"]["axle_track"])
+robot_db.turn(90)
+
+avn.adelante_N_casillas(robot_LEGO, left_motor, right_motor, 1)
+
+avn.atras_N_casillas(robot_LEGO, left_motor, right_motor, 1)
+
