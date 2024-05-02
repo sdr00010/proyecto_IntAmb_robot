@@ -4,6 +4,23 @@
         "axle_track": 120,
         "medida_casilla": 280,
         "giro": 90,
-        "mapa": "0202000105030705000200041109060110031000000200080101100110000106010701"
+        "relaciones": {"5": "arriba", "-1": "derecha", "-5": "abajo", "1": "izquierda"},
+        "direcciones": {"arriba": 1,    "derecha": 2,   "abajo": 3,     "izquierda": 4}
+    },
+    "casillas": {
+        "00": {"nombre": "Edificio",        "arriba": false,    "derecha": false,   "abajo": false,     "izquierda": false},
+        "01": {"nombre": "CalleHorizontal", "arriba": false,    "derecha": true,    "abajo": false,     "izquierda": true},
+        "02": {"nombre": "CalleVertical",   "arriba": true,     "derecha": false,   "abajo": true,      "izquierda": false},
+        "03": {"nombre": "EsquinaArrDer",   "arriba": true,     "derecha": true,    "abajo": false,     "izquierda": false},
+        "04": {"nombre": "EsquinaAbaDer",   "arriba": false,    "derecha": true,    "abajo": true,      "izquierda": false},
+        "05": {"nombre": "EsquinaAbaIzq",   "arriba": false,    "derecha": false,   "abajo": true,      "izquierda": true},
+        "06": {"nombre": "EsquinaArrIzq",   "arriba": true,     "derecha": false,   "abajo": false,     "izquierda": true},
+        "07": {"nombre": "T-Arriba",        "arriba": true,     "derecha": true,    "abajo": false,     "izquierda": true},
+        "08": {"nombre": "T-Derecha",       "arriba": true,     "derecha": true,    "abajo": true,      "izquierda": false},
+        "09": {"nombre": "T-Abajo",         "arriba": false,    "derecha": true,    "abajo": true,      "izquierda": true},
+        "10": {"nombre": "T-Izquierda",     "arriba": true,     "derecha": false,   "abajo": true,      "izquierda": true},
+        "11": {"nombre": "Cruz",            "arriba": true,     "derecha": true,    "abajo": true,      "izquierda": true}
     }
+    
+    
 }
