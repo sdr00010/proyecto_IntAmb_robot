@@ -38,18 +38,21 @@ gyro = GyroSensor(Port.S1) # giroscopio
 #avn.avanzar_atras(robot_LEGO, left_motor, right_motor, 300)
 
 # Prueba: girar a la derecha
-#gr.girar_derecha(robot_LEGO, left_motor, right_motor, 90)
+#gr.girar_derecha(robot_LEGO, left_motor, right_motor, 180)
 
 # Prueba: girar a la izquierda
 #gr.girar_izquierda(robot_LEGO, left_motor, right_motor, 90)
 
 # Prueba: giro con el giroscopio
-#gr.girar_derecha_gyro(robot_LEGO, right_motor, gyro, 90)
+#global float angulo_actual = 0
+#gr.girar_derecha_gyro(robot_LEGO, left_motor, gyro, 180, gyro.angle())
+
+#gr.girar_izquierda_gyro(robot_LEGO, right_motor, gyro, -180, gyro.angle())
 
 # Prueba: coger paquete
-ap.cogerPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
-avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
-ap.dejarPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
+#ap.cogerPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
+#avn.avanzar_adelante(robot_LEGO, left_motor, right_motor, 300)
+#ap.dejarPaquete(robot_LEGO, left_motor, right_motor, pala_motor)
 
 
 """ 
