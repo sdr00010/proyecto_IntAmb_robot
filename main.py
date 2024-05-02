@@ -17,6 +17,8 @@ import sys
 import time
 from interno import utils
 from movimiento import avanzar as avn
+from movimiento import girar as gr
+from movimiento import accionPaquete as ap
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 
