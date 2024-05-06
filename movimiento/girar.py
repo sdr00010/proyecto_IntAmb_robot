@@ -22,9 +22,9 @@ def girar_izquierda(robot: EV3Brick, left_motor: Motor, right_motor: Motor, grad
 def eleccion_orientacion(destino: str):
     if(destino == "DERECHA"):
         girar_derecha_gyro(robot_LEGO, robot_LEGO.left_motor, robot_LEGO.gyroSensor, 90, robot_LEGO.angle())
-    else if(destino == "IZQUIERDA"):
+    elif(destino == "IZQUIERDA"):
         girar_izquierda_gyro(robot_LEGO, robot_LEGO.right_motor, robot_LEGO.gyroSensor, -90, robot_LEGO.angle())
-    else if(destino == "MEDIA-VUELTA"):
+    elif(destino == "MEDIA-VUELTA"):
         girar_semicirculo_gyro(robot_LEGO, robot_LEGO.left_motor, robot_LEGO.gyroSensor, 180, robot_LEGO.angle())
 
 def girar_derecha_gyro(robot: EV3Brick, left_motor: Motor, gyroSensor: GyroSensor, grados: float, angulo_actual: float):

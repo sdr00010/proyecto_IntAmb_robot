@@ -38,3 +38,4 @@ def publicarPosicion(client, topic):
 
 def publicarFinalizacion(topic):
     client.publish(MQTT_Topic_Finalizacion, MQTT_ClientID + ' finalizado')
+
