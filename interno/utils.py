@@ -63,7 +63,10 @@ class Robot:
     robot = EV3Brick()
     left_motor = Motor(Port.A)  # motor rueda izquierda
     right_motor = Motor(Port.D) # motor rueda derecha
+    pala_motor = Motor(Port.B)
     drive = None
+    gyroSensor = None
+    
     # Constructor
     def __init__(self):
         self.name = "robotito"
@@ -76,38 +79,39 @@ class Robot:
                                 wheel_diameter=55, 
                                 axle_track=120
                             )
+        # self.drive.settings(straight_speed=500, straight_acceleration= 200, turn_rate=200)
+        self.gyroSensor = GyroSensor(Port.S1)
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Controlador:
     # Configurador: parámetros...
     CONFIG = None
+    cola_pedidos = None
     
     def __init__(self):
         # Cargar el archivo de configuración
         with open('interno/config.json', 'r') as f:
             self.CONFIG = json.load(f)
         # Crear la cola de pedidos
-            # self.__cola_pedidos = Queue()
-        # Cargar el self.mapa
-            # mapa_sin_procesar = self._cargar()
-        # Procesar el self.mapa
-            # self.__procesar_mapa()
+            self.cola_pedidos = []
         
     # CAMBIAR QUEUE POR UN LIST
-    """ # Cola de pedidos
+    # Cola de pedidos
     # Funciones de gestión de la cola
-        def comprobar_cola_vacia(self):
-            return self.__cola_pedidos.empty()
-        def comprobar_cola_no_vacia(self):
-            return (not self.__cola_pedidos.empty())
-        def siguiente_cola(self):
-            if (self.__cola_pedidos.empty()): return None
-            return __cola_pedidos.get_nowait()
-        def meter_en_cola(self, elemento: str):
-            self.__cola_pedidos.put_nowait(elemento)
-        def get_cola(self):
-            return self.__cola_pedidos.queue """
+    def comprobar_cola_vacia(self):
+        return len(self.cola_pedidos) == 0
+    def comprobar_cola_no_vacia(self):
+        return len(self.cola_pedidos) != 0
+    
+    def siguiente_cola(self):
+        if (self.comprobar_cola_vacia()): return None
+        return cola_pedidos.pop(0)
+    def meter_en_cola(self, elemento: list):
+        self.cola_pedidos.append(elemento)
+        
+    def get_cola(self):
+        return self.cola_pedidos.queue
     
     # Funciones del robot
     def comprobar_orientacion(self, c_inicial, c_final, orientacion):
@@ -122,9 +126,9 @@ class Controlador:
         # resta
         resultado = dir_deseada - dir_actual # derecha (2) - arriba (1) = 1
         # devolver el giro adecuado
-        if (resultado == 1 or resultado == -3): return 90
-        if (abs(resultado) == 2): return 180
-        if (resultado == -1 or resultado == 3): return -90
+        if (resultado == 1 or resultado == -3): return "DERECHA"
+        if (abs(resultado) == 2): return "MEDIA-VUELTA"
+        if (resultado == -1 or resultado == 3): return "IZQUIERDA"
         
         
 

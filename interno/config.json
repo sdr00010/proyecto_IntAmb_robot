@@ -2,8 +2,8 @@
     "parametros": {
         "wheel_diameter": 55,
         "axle_track": 120,
-        "medida_casilla": 280,
-        "giro": 90,
+        "medida_casilla": 275,
+        "giro": 88,
         "relaciones": {"5": "arriba", "-1": "derecha", "-5": "abajo", "1": "izquierda"},
         "direcciones": {"arriba": 1,    "derecha": 2,   "abajo": 3,     "izquierda": 4}
     },
