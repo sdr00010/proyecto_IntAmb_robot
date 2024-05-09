@@ -106,7 +106,7 @@ class Controlador:
     
     def siguiente_cola(self):
         if (self.comprobar_cola_vacia()): return None
-        return cola_pedidos.pop(0)
+        return self.cola_pedidos.pop(0)
     def meter_en_cola(self, elemento: list):
         self.cola_pedidos.append(elemento)
         
@@ -115,7 +115,8 @@ class Controlador:
     
     # Funciones del robot
     def comprobar_orientacion(self, c_inicial, c_final, orientacion):
-        relacion = self.CONFIG["parametros"]["relaciones"][str(c_inicial - c_final)] # -1: derecha, 1: izquierda, 5: arriba, -5: abajo
+        orient = c_inicial - c_final
+        relacion = self.CONFIG["parametros"]["relaciones"][str(orient)] # -1: derecha, 1: izquierda, 5: arriba, -5: abajo
         if (orientacion == relacion): 
             return True, relacion
         else: 
