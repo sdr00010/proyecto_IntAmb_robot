@@ -14,34 +14,42 @@ from interno.utils import Robot
 from interno.utils import Controlador
 controlador = Controlador()
 
-def girar_derecha(robot_db: DriveBase):
-    robot_db.turn(controlador.CONFIG["parametros"]["giro"])
-    #robot.speaker.beep(frequency=1000, duration=500)
+def girar_derecha(robot: Robot):
+    actual = robot.gyroSensor.angle()
+    destino = robot.gyroSensor.angle() + (controlador.CONFIG["parametros"]["giro"] + 1)
+    robot.drive.turn((controlador.CONFIG["parametros"]["giro"] + 1))
+    # corregir el angulo
+    robot.drive.stop()
+    while robot.gyroSensor.angle() < destino:
+        robot.left_motor.run(250)
+    
 
-def girar_izquierda(robot_db: DriveBase):
-    robot_db.turn((controlador.CONFIG["parametros"]["giro"] + 1) * (-1))
+def girar_izquierda(robot: Robot):
+    actual = robot.gyroSensor.angle()
+    destino = robot.gyroSensor.angle() + ((controlador.CONFIG["parametros"]["giro"]-3) * (-1))
+    robot.drive.turn((controlador.CONFIG["parametros"]["giro"]-3) * (-1))
+    # corregir el angulo
+    robot.drive.stop()
+    while robot.gyroSensor.angle() > destino:
+        robot.right_motor.run(200)
     
-    #robot.speaker.beep(frequency=800, duration=500)
+def girar_media_vuelta(robot: Robot):
+    actual = robot.gyroSensor.angle()
+    destino = robot.gyroSensor.angle() + (controlador.CONFIG["parametros"]["giro"])*2
+    robot.drive.turn(controlador.CONFIG["parametros"]["giro"]*2)
+    # corregir el angulo
+    robot.drive.stop()
+    while robot.gyroSensor.angle() < destino:
+        robot.left_motor.run(250)
     
-def girar_media_vuelta(robot_db: DriveBase):
-    robot_db.turn(180)
-    
-def eleccion_giro(robot_drive: DriveBase, destino: str):
+def eleccion_giro(robot: Robot, destino: str):
     if(destino == "DERECHA"):
-        girar_derecha(robot_drive)
+        girar_derecha(robot)
     elif(destino == "IZQUIERDA"):
-        girar_izquierda(robot_drive)
+        girar_izquierda(robot)
     elif(destino == "MEDIA-VUELTA"):
-        girar_media_vuelta(robot_drive)
+        girar_media_vuelta(robot)
 
-
-def eleccion_orientacion(robot_LEGO: Robot, destino: str):
-    if(destino == "DERECHA"):
-        girar_derecha_gyro(robot_LEGO.robot, robot_LEGO.left_motor, robot_LEGO.gyroSensor, 90, robot_LEGO.gyroSensor.angle())
-    elif(destino == "IZQUIERDA"):
-        girar_izquierda_gyro(robot_LEGO.robot, robot_LEGO.right_motor, robot_LEGO.gyroSensor, -90, robot_LEGO.gyroSensor.angle())
-    elif(destino == "MEDIA-VUELTA"):
-        girar_semicirculo_gyro(robot_LEGO.robot, robot_LEGO.left_motor, robot_LEGO.gyroSensor, 180, robot_LEGO.gyroSensor.angle())
 
 def girar_derecha_gyro(robot: EV3Brick, left_motor: Motor, gyroSensor: GyroSensor, grados: float, angulo_actual: float):
     angulo_target = angulo_actual + grados

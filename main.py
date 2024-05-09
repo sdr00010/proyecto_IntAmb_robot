@@ -78,8 +78,8 @@ def on_disconnect():
 
 # conexión
 mqtt_client.set_callback(on_message)
-mqtt_client.connect()
-on_connect()
+# mqtt_client.connect()
+# on_connect()
 
 print("Robot conectado")
 robot.robot.speaker.beep()
@@ -87,6 +87,7 @@ robot.robot.speaker.beep()
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 index_pedidos = 0
+control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 33, 34], [33, 28, 23, 18, 13, 12, 7, 6, 5, 0]])
 
 # MAIN
 try:
@@ -105,7 +106,7 @@ try:
                     if (not correcto): 
                         giro = control.corregir_orientacion(robot.orientacion, deseado)
                         # Girar robot
-                        gr.eleccion_giro(robot.drive, giro)
+                        gr.eleccion_giro(robot, giro)
                         robot.orientacion = deseado
                     # 2. Avanzar a la siquiente casilla
                     avn.adelante_N_casillas(robot.robot, robot.left_motor, robot.right_motor, 1)
@@ -113,16 +114,16 @@ try:
                         robot.casilla_actual = casilla
                         # publicar posicion: odometría
                         posicion_msg = str(robot.casilla_actual)
-                        mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
+                        # mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
             # Finalizar pedido
             fin_msg = "finalizado"
-            mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
+            # mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
             robot.robot.speaker.beep()
             robot.robot.speaker.beep()
         else:
             print("Esperando...")
             time.sleep(2)
-            mqtt_client.check_msg()
+            # mqtt_client.check_msg()
 except KeyboardInterrupt:
     on_disconnect()
     mqtt_client.disconnect()
