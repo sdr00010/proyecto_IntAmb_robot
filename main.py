@@ -35,8 +35,8 @@ client_id = file.readline().rstrip('\n')
 file.close()
 os.system('rm /dev/shm/hostname.txt')
 
-mqtt_broker = '192.168.48.245' # cambiar cada dia
-mqtt_password = '00280549'
+mqtt_broker = '192.168.0.45' # cambiar cada dia
+mqtt_password = 'Alexesguapo'
 mqtt_port = 1883
 
 mqtt_client = MQTTClient(client_id, mqtt_broker, port=mqtt_port, password=mqtt_password)
@@ -78,8 +78,8 @@ def on_disconnect():
 
 # conexión
 mqtt_client.set_callback(on_message)
-# mqtt_client.connect()
-# on_connect()
+mqtt_client.connect()
+on_connect()
 
 print("Robot conectado")
 robot.robot.speaker.beep()
@@ -87,7 +87,7 @@ robot.robot.speaker.beep()
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 index_pedidos = 0
-control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 33, 34], [33, 28, 23, 18, 13, 12, 7, 6, 5, 0]])
+#control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 33, 34], [33, 28, 23, 18, 13, 12, 7, 6, 5, 0]])
 
 # MAIN
 try:
@@ -102,6 +102,7 @@ try:
                 print("Camino ", i)
                 for j, casilla in enumerate(camino):
                     # 1. Comprobar la orientacion
+                    print("casilla actual: " + str(robot.casilla_actual) + " casilla: " + str(casilla) + " orientacion del robot: " + str(robot.orientacion))
                     correcto, deseado = control.comprobar_orientacion(robot.casilla_actual, casilla, robot.orientacion)
                     if (not correcto): 
                         giro = control.corregir_orientacion(robot.orientacion, deseado)
@@ -114,16 +115,16 @@ try:
                         robot.casilla_actual = casilla
                         # publicar posicion: odometría
                         posicion_msg = str(robot.casilla_actual)
-                        # mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
+                        mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
             # Finalizar pedido
             fin_msg = "finalizado"
-            # mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
+            mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
             robot.robot.speaker.beep()
             robot.robot.speaker.beep()
         else:
             print("Esperando...")
             time.sleep(2)
-            # mqtt_client.check_msg()
+            mqtt_client.check_msg()
 except KeyboardInterrupt:
     on_disconnect()
     mqtt_client.disconnect()

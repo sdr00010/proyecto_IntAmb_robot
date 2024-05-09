@@ -64,6 +64,7 @@ class Robot:
     left_motor = Motor(Port.A)  # motor rueda izquierda
     right_motor = Motor(Port.D) # motor rueda derecha
     pala_motor = Motor(Port.B)
+    colorSensor = None
     drive = None
     gyroSensor = None
     
@@ -77,10 +78,11 @@ class Robot:
                                 self.left_motor, 
                                 self.right_motor, 
                                 wheel_diameter=55, 
-                                axle_track=120
+                                axle_track=120,
                             )
         # self.drive.settings(straight_speed=500, straight_acceleration= 200, turn_rate=200)
         self.gyroSensor = GyroSensor(Port.S1)
+        self.colorSensor = ColorSensor(Port.S4)
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
