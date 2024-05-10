@@ -8,6 +8,9 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+
+from interno.utils import Robot
+
 # imports locales
 from interno.utils import Controlador
 controlador = Controlador()
@@ -40,11 +43,12 @@ def atras_N_casillas(robot: EV3Brick, left_motor: Motor, right_motor: Motor, n: 
 
 # funciones para recoger el paquete
 def avanzar_paquete_1(robot: EV3Brick, left_motor: Motor, right_motor: Motor):
-    avanzar_adelante(robot, left_motor, right_motor, 200) # medida entre el (centro anterior) hasta la (posicion de coger el paquete)
+    avanzar_adelante(robot, left_motor, right_motor, 170) # medida entre el (centro anterior) hasta la (posicion de coger el paquete)
     
 def avanzar_paquete_2(robot: EV3Brick, left_motor: Motor, right_motor: Motor):
-    avanzar_adelante(robot, left_motor, right_motor, 60) # medida entre (posicion de coger el paquete) y (centro de la casilla siguiente)
+    avanzar_adelante(robot, left_motor, right_motor, 1) # medida entre (posicion de coger el paquete) y (centro de la casilla siguiente)
     
 def atras_paquete(robot: EV3Brick, left_motor: Motor, right_motor: Motor):
-    avanzar_atras(robot, left_motor, right_motor, 200) # medida entre el (centro anterior) hasta la (posicion de coger el paquete)
+    avanzar_atras(robot, left_motor, right_motor, 150) # medida entre el (centro anterior) hasta la (posicion de coger el paquete)
+    
     

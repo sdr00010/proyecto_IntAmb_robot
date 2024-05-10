@@ -16,40 +16,46 @@ controlador = Controlador()
 
 def girar_derecha(robot: Robot):
     actual = robot.gyroSensor.angle()
-    destino = robot.gyroSensor.angle() + (controlador.CONFIG["parametros"]["giro"] + 0)
-    robot.drive.turn((controlador.CONFIG["parametros"]["giro"] + 0))
+    destino = robot.gyroSensor.angle() + (controlador.CONFIG["parametros"]["giro"] - 2)
+    print("angulo actual --> ", actual, "destino --> ", destino)
+    robot.drive.turn((controlador.CONFIG["parametros"]["giro"] - 1))
     # corregir el angulo
     robot.drive.stop()
     while robot.gyroSensor.angle() < destino:
-        robot.left_motor.run(250)
-        print(robot.colorSensor.color())
-        if(robot.colorSensor.color() != Color.GREEN):
-            print(robot.colorSensor.color())
+        robot.left_motor.run(150)
+        # print(robot.colorSensor.color())
+        # if(robot.colorSensor.color() != Color.GREEN):
+        #     print(robot.colorSensor.color())
+    print("conseguido -->", robot.gyroSensor.angle())
     
 
 def girar_izquierda(robot: Robot):
     actual = robot.gyroSensor.angle()
     destino = robot.gyroSensor.angle() + ((controlador.CONFIG["parametros"]["giro"]-1) * (-1))
+    print("angulo actual --> ", actual, "destino --> ", destino)
     robot.drive.turn((controlador.CONFIG["parametros"]["giro"]-1) * (-1))
     # corregir el angulo
     robot.drive.stop()
     while robot.gyroSensor.angle() > destino:
-        robot.right_motor.run(200)
-        print(robot.colorSensor.color())
-        if(robot.colorSensor.color() != Color.GREEN):
-            print(robot.colorSensor.color())
+        robot.right_motor.run(160)
+        # print(robot.colorSensor.color())
+        # if(robot.colorSensor.color() != Color.GREEN):
+        #     print(robot.colorSensor.color())
+    print("conseguido -->", robot.gyroSensor.angle())
     
 def girar_media_vuelta(robot: Robot):
     actual = robot.gyroSensor.angle()
     destino = robot.gyroSensor.angle() + (controlador.CONFIG["parametros"]["giro"])*2
-    robot.drive.turn(controlador.CONFIG["parametros"]["giro"]*2)
+    print("angulo actual --> ", actual, "destino --> ", destino)
+    robot.drive.turn((controlador.CONFIG["parametros"]["giro"])*2)
     # corregir el angulo
     robot.drive.stop()
     while robot.gyroSensor.angle() < destino:
-        robot.left_motor.run(250)
-        print(robot.colorSensor.color())
-        if(robot.colorSensor.color() != Color.GREEN):
-            print(robot.colorSensor.color())
+        robot.left_motor.run(160)
+        # print(robot.colorSensor.color())
+        # if(robot.colorSensor.color() != Color.GREEN):
+        #     print(robot.colorSensor.color())
+    print("conseguido -->", robot.gyroSensor.angle())
     
 def eleccion_giro(robot: Robot, destino: str):
     if(destino == "DERECHA"):

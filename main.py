@@ -35,8 +35,8 @@ client_id = file.readline().rstrip('\n')
 file.close()
 os.system('rm /dev/shm/hostname.txt')
 
-mqtt_broker = '192.168.0.45' # cambiar cada dia
-mqtt_password = 'Alexesguapo'
+mqtt_broker = '192.168.171.45' # cambiar cada dia
+mqtt_password = 'swifi4680'
 mqtt_port = 1883
 
 mqtt_client = MQTTClient(client_id, mqtt_broker, port=mqtt_port, password=mqtt_password)
@@ -78,8 +78,8 @@ def on_disconnect():
 
 # conexión
 mqtt_client.set_callback(on_message)
-mqtt_client.connect()
-on_connect()
+# mqtt_client.connect()
+# on_connect()
 
 print("Robot conectado")
 robot.robot.speaker.beep()
@@ -87,7 +87,12 @@ robot.robot.speaker.beep()
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 index_pedidos = 0
-#control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 33, 34], [33, 28, 23, 18, 13, 12, 7, 6, 5, 0]])
+control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 27], [28, 23, 18, 13, 12, 7, 6, 1]])
+control.meter_en_cola([[7, 12, 11, 16, 15], [16, 11, 12, 13, 18, 23, 28, 33, 34]])
+
+# resetear los ángulos
+robot.gyroSensor.reset_angle(0)
+robot.pala_motor.reset_angle(0)
 
 # MAIN
 try:
@@ -110,21 +115,25 @@ try:
                         gr.eleccion_giro(robot, giro)
                         robot.orientacion = deseado
                     # 2. Avanzar a la siquiente casilla
-                    avn.adelante_N_casillas(robot.robot, robot.left_motor, robot.right_motor, 1)
-                    if (i != 1 or j != len(camino)-1): 
+                    if ( not (i == 1 and j == len(camino)-1)): # no es el destino
+                        if ( (i == 0 and j == len(camino)-1) ): # coger el paquete
+                            ap.cogerPaquete(robot.robot, robot.left_motor, robot.right_motor, robot.pala_motor)
+                        else:    
+                            avn.adelante_N_casillas(robot.robot, robot.left_motor, robot.right_motor, 1)
                         robot.casilla_actual = casilla
                         # publicar posicion: odometría
                         posicion_msg = str(robot.casilla_actual)
-                        mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
+                        # mqtt_client.publish(MQTT_Topic_Posicion, posicion_msg.encode())
             # Finalizar pedido
+            ap.dejarPaquete(robot.robot, robot.left_motor, robot.right_motor, robot.pala_motor)
+            robot.robot.speaker.beep()
             fin_msg = "finalizado"
-            mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
-            robot.robot.speaker.beep()
-            robot.robot.speaker.beep()
+            # mqtt_client.publish(MQTT_Topic_Finalizacion, fin_msg.encode())
         else:
             print("Esperando...")
-            time.sleep(2)
-            mqtt_client.check_msg()
+            robot.drive.stop()
+            # mqtt_client.check_msg()
+            # control.meter_en_cola([[21, 26, 25], [26, 31, 30]])
 except KeyboardInterrupt:
     on_disconnect()
     mqtt_client.disconnect()

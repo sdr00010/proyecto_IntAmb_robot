@@ -80,6 +80,7 @@ class Robot:
                                 wheel_diameter=55, 
                                 axle_track=120,
                             )
+        self.drive.settings(straight_speed=500, straight_acceleration=200, turn_rate=300, turn_acceleration=100)
         # self.drive.settings(straight_speed=500, straight_acceleration= 200, turn_rate=200)
         self.gyroSensor = GyroSensor(Port.S1)
         self.colorSensor = ColorSensor(Port.S4)
