@@ -1,26 +1,43 @@
 {
     "parametros": {
-        "wheel_diameter": 55,
-        "axle_track": 120,
-        "medida_casilla": 275,
-        "giro": 88,
-        "relaciones": {"5": "arriba", "-1": "derecha", "-5": "abajo", "1": "izquierda"},
-        "direcciones": {"arriba": 1,    "derecha": 2,   "abajo": 3,     "izquierda": 4}
-    },
-    "casillas": {
-        "00": {"nombre": "Edificio",        "arriba": false,    "derecha": false,   "abajo": false,     "izquierda": false},
-        "01": {"nombre": "CalleHorizontal", "arriba": false,    "derecha": true,    "abajo": false,     "izquierda": true},
-        "02": {"nombre": "CalleVertical",   "arriba": true,     "derecha": false,   "abajo": true,      "izquierda": false},
-        "03": {"nombre": "EsquinaArrDer",   "arriba": true,     "derecha": true,    "abajo": false,     "izquierda": false},
-        "04": {"nombre": "EsquinaAbaDer",   "arriba": false,    "derecha": true,    "abajo": true,      "izquierda": false},
-        "05": {"nombre": "EsquinaAbaIzq",   "arriba": false,    "derecha": false,   "abajo": true,      "izquierda": true},
-        "06": {"nombre": "EsquinaArrIzq",   "arriba": true,     "derecha": false,   "abajo": false,     "izquierda": true},
-        "07": {"nombre": "T-Arriba",        "arriba": true,     "derecha": true,    "abajo": false,     "izquierda": true},
-        "08": {"nombre": "T-Derecha",       "arriba": true,     "derecha": true,    "abajo": true,      "izquierda": false},
-        "09": {"nombre": "T-Abajo",         "arriba": false,    "derecha": true,    "abajo": true,      "izquierda": true},
-        "10": {"nombre": "T-Izquierda",     "arriba": true,     "derecha": false,   "abajo": true,      "izquierda": true},
-        "11": {"nombre": "Cruz",            "arriba": true,     "derecha": true,    "abajo": true,      "izquierda": true}
+        "robot":{
+            "wheel_diameter": 55,
+            "axle_track": 120,
+            "straight_speed": 500, 
+            "straight_acceleration": 200, 
+            "turn_rate": 300, 
+            "turn_acceleration": 100
+        },
+        "medidas": {
+            "casilla": 275,
+            "al_paquete": 170,
+            "recolocar_paquete": 50
+        },
+        "giros": {
+            "derecha": 88,
+            "izquierda": -88,
+            "vuelta": 176
+        },
+        "pala": {
+            "velocidad": 500,
+            "subir": 0,
+            "bajar": -140
+        },
+        "mqtt": {
+            "port": 1883,
+            "password": "",
+            "brokerIP": ""
+        },
+        "relaciones": {
+            "5": "arriba", 
+            "-1": "derecha", 
+            "-5": "abajo", 
+            "1": "izquierda"},
+        "direcciones": {
+            "arriba": 1,    
+            "derecha": 2,   
+            "abajo": 3,     
+            "izquierda": 4
+        }
     }
-    
-    
 }

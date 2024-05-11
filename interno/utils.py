@@ -16,74 +16,39 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Celda:
-    id = 0
-    tipo = ""
-    nombre = ""
-    arriba = False
-    derecha = False
-    abajo = False
-    izquierda = False
-    def __init__(self, id, tipo, datos):
-        self.id = id
-        self.tipo = tipo
-        self.nombre = datos["nombre"]
-        self.arriba = datos["arriba"]
-        self.derecha = datos["derecha"]
-        self.abajo = datos["abajo"]
-        self.izquierda = datos["izquierda"]
-    # def __str__(self):
-    #     return f"[{self.id}] {self.nombre} -> arriba-{self.arriba} ; derecha-{self.derecha} ; abajo-{self.abajo} ; izquierda-{self.izquierda}"
-
-class Casilla:
-    id = ""
-    row = 0
-    col = 0
-    def __init__(self, id, row, col):
-        self.id = id
-        self.row = row  
-        self.col = col
-
-class Pedido:
-    id = ""
-    inicio = Casilla("", 0, 0)
-    destino = Casilla("", 0, 0)
-    def __init__(self, id, inicio, destino):
-        self.id = id
-        self.inicio = inicio  
-        self.destino = destino
-
 class Robot:
     # Atributos
-    name = ""
-    estado = ""             # parado, trabajando
     orientacion = ""        # arriba, derecha, abajo, izquierda
     casilla_actual = 0 
     # Robot
-    robot = EV3Brick()
-    left_motor = Motor(Port.A)  # motor rueda izquierda
-    right_motor = Motor(Port.D) # motor rueda derecha
-    pala_motor = Motor(Port.B)
-    colorSensor = None
+    robot = None
+    left_motor = None
+    right_motor = None
+    pala_motor = None
     drive = None
     gyroSensor = None
     
     # Constructor
-    def __init__(self):
-        self.name = "robotito"
-        self.estado = "parado"         
+    def __init__(self, wheel_diameter, axle_track, straight_speed, straight_acceleration, turn_rate, turn_acceleration):
         self.orientacion = "derecha" 
         self.casilla_actual = 30 # abajo a la izquierda
+        self.robot = EV3Brick()
+        # motores
+        self.left_motor = Motor(Port.A)  # motor rueda izquierda
+        self.right_motor = Motor(Port.D)  # motor rueda izquierda
+        self.pala_motor = Motor(Port.B)  # motor rueda izquierda
+        self.gyroSensor = GyroSensor(Port.S1)
+        # drive: movimiento
         self.drive = DriveBase(  
                                 self.left_motor, 
                                 self.right_motor, 
-                                wheel_diameter=55, 
-                                axle_track=120,
+                                wheel_diameter=wheel_diameter, 
+                                axle_track=axle_track,
                             )
-        self.drive.settings(straight_speed=500, straight_acceleration=200, turn_rate=300, turn_acceleration=100)
-        # self.drive.settings(straight_speed=500, straight_acceleration= 200, turn_rate=200)
-        self.gyroSensor = GyroSensor(Port.S1)
-        self.colorSensor = ColorSensor(Port.S4)
+        self.drive.settings(straight_speed=straight_speed, straight_acceleration=straight_acceleration, turn_rate=turn_rate, turn_acceleration=turn_acceleration)
+        # resetear los ángulos
+        self.gyroSensor.reset_angle(0)
+        self.pala_motor.reset_angle(0)
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 

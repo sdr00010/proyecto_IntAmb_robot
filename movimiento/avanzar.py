@@ -13,8 +13,54 @@ from interno.utils import Robot
 
 # imports locales
 from interno.utils import Controlador
-controlador = Controlador()
 
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+class ControladorMovimiento:
+    robot = None
+    controlador = None
+    # constructor
+    def __init__(self, robot: Robot):
+        self.robot = robot
+        self.controlador = Controlador()
+    # métodos privados
+    def __avanzar_adelante(self, distancia: float):
+        self.robot.drive.robot_db.straight(distancia)
+    def __avanzar_atras(self, distancia: float):
+        self.robot.drive.robot_db.straight(distancia*(-1))
+    # métodos públicos
+    # 1. Avanzar N casillas hacia delante
+    def avanzar_casillas(self, n: int):
+        self.__avanzar_adelante( n*(self.controlador.CONFIG["parametros"]["medidas"]["casilla"]) )
+    # 2. Avanzar N casillas hacia atrás
+    def retroceder_casillas(self, n: int):
+        self.__avanzar_atras( n*(self.controlador.CONFIG["parametros"]["medidas"]["casilla"]) )
+    # 3. Avanzar al paquete
+    def avanzar_al_paquete(self):
+        self.__avanzar_adelante(self.controlador.CONFIG["parametros"]["medidas"]["al_paquete"]) # medida entre el (centro anterior) hasta la (posicion de coger el paquete)
+    # 4. Recolocarse en la casilla del paquete
+    def avanzar_recolocar_paquete(self):
+        self.__avanzar_adelante(self.controlador.CONFIG["parametros"]["medidas"]["recolocar_paquete"]) # medida entre (posicion de coger el paquete) y (centro de la casilla siguiente)
+    # 5. Retroceder tras entregar el paquete
+    def retroceder_paquete(self):
+        self.__avanzar_atras(self.controlador.CONFIG["parametros"]["medidas"]["al_paquete"])
+        
+    def recoger_paquete(self):
+        self.avanzar_al_paquete() # avanzar delante del paquete
+        wait(500) # esperar
+        self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["bajar"]) # bajar la pala
+        wait(800) # esperar
+        self.avanzar_recolocar_paquete() # avanzar al medio de la casilla
+        self.robot.pala_motor.stop()
+
+    def entregar_paquete(self):
+        self.avanzar_al_paquete() # avanzar delante del paquete
+        self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["subir"])  # subir pala
+        wait(800) # esperar
+        self.retroceder_paquete() # retroceder a la anterior
+        self.robot.pala_motor.stop()
+    
+    
 # funciones: avanzar hacia delante
 def avanzar_adelante(robot: EV3Brick, left_motor: Motor, right_motor: Motor, distancia: float):
     # Inicializar el DriveBase

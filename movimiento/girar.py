@@ -10,9 +10,65 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 from interno.utils import Robot
-
 from interno.utils import Controlador
-controlador = Controlador()
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+class ControladorGiro:
+    robot = None
+    controlador = None
+    # constructor
+    def __init__(self, robot: Robot):
+        self.robot = robot
+        self.controlador = Controlador()
+    
+    # métodos privados
+    
+    def __girar_derecha(self):
+        # ángulos: actual y destino
+        actual = self.robot.gyroSensor.angle()
+        destino = self.robot.gyroSensor.angle() + self.controlador.CONFIG["parametros"]["giros"]["derecha"]
+        # girar
+        self.robot.drive.turn(self.controlador.CONFIG["parametros"]["giros"]["derecha"])
+        # corregir el angulo: giroscopio
+        self.robot.drive.stop()
+        while self.robot.gyroSensor.angle() < destino:
+            self.robot.left_motor.run(200)
+    
+    def __girar_izquierda(self):
+        # ángulos: actual y destino
+        actual = self.robot.gyroSensor.angle()
+        destino = self.robot.gyroSensor.angle() + self.controlador.CONFIG["parametros"]["giros"]["izquierda"]
+        # girar
+        self.robot.drive.turn(self.controlador.CONFIG["parametros"]["giros"]["izquierda"])
+        # corregir el angulo: giroscopio
+        self.robot.drive.stop()
+        while self.robot.gyroSensor.angle() > destino:
+            self.robot.right_motor.run(200)
+    
+    def __girar_media_vuelta(self):
+        # ángulos: actual y destino
+        actual = self.robot.gyroSensor.angle()
+        destino = self.robot.gyroSensor.angle() + self.controlador.CONFIG["parametros"]["giros"]["vuelta"]
+        # girar
+        self.robot.drive.turn(self.controlador.CONFIG["parametros"]["giros"]["vuelta"])
+        # corregir el angulo: giroscopio
+        self.robot.drive.stop()
+        while self.robot.gyroSensor.angle() < destino:
+            self.robot.left_motor.run(200)
+    
+    # métodos públicos
+    
+    def eleccion_giro(self, destino: str):
+        if(destino == "DERECHA"):
+            self.__girar_derecha()
+        elif(destino == "IZQUIERDA"):
+            self.__girar_izquierda()
+        elif(destino == "MEDIA-VUELTA"):
+            self.__girar_media_vuelta()
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 def girar_derecha(robot: Robot):
     actual = robot.gyroSensor.angle()
