@@ -97,7 +97,7 @@ ControladorMQTT = ControladorMQTT(control)
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 27], [28, 23, 18, 13, 12, 7, 6, 1]])
+control.meter_en_cola([[31, 26, 21, 16, 11, 12, 13, 18, 23, 28, 27], [28, 23, 18, 13, 12, 7, 6, 1]])
 # control.meter_en_cola([[7, 12, 11, 16, 15], [16, 11, 12, 13, 18, 23, 28, 33, 34]])
 
 # MAIN
@@ -108,8 +108,8 @@ MQTT_Topic_Posicion = 'equipoD/posicion'
 MQTT_Topic_Finalizacion = 'equipoD/finalizacion'
 
 # conexión
-ControladorMQTT.client.connect()
-ControladorMQTT.on_connect()
+#ControladorMQTT.client.connect()
+#ControladorMQTT.on_connect()
 robot.robot.speaker.beep()
 
 # tarea: reparto de pedidos
@@ -136,16 +136,16 @@ try:
                             ControladorMovimiento.adelante_casillas(1)
                         robot.casilla_actual = casilla
                         # publicar posicion: odometría
-                        ControladorMQTT.publicar_mensaje(MQTT_Topic_Posicion, str(robot.casilla_actual))
+                        #ControladorMQTT.publicar_mensaje(MQTT_Topic_Posicion, str(robot.casilla_actual))
             # Entregar paquete
             ControladorMovimiento.entregar_paquete()
             robot.robot.speaker.beep()
             # publicar finalización
-            ControladorMQTT.publicar_mensaje(MQTT_Topic_Finalizacion, "finalizado")
+            #ControladorMQTT.publicar_mensaje(MQTT_Topic_Finalizacion, "finalizado")
         else:
             # Esperar a un nuevo pedido
             robot.drive.stop()
-            ControladorMQTT.client.check_msg()
+            #ControladorMQTT.client.check_msg()
             time.sleep(2)
             
 except KeyboardInterrupt:
