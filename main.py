@@ -102,6 +102,11 @@ ControladorMQTT = ControladorMQTT(control)
 
 # MAIN
 
+MQTT_Topic_Mapa = 'map'
+MQTT_Topic_Pedido = 'equipoD/pedido'
+MQTT_Topic_Posicion = 'equipoD/posicion'
+MQTT_Topic_Finalizacion = 'equipoD/finalizacion'
+
 # conexión
 ControladorMQTT.client.connect()
 ControladorMQTT.on_connect()

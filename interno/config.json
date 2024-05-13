@@ -4,9 +4,9 @@
             "wheel_diameter": 55,
             "axle_track": 120,
             "straight_speed": 500, 
-            "straight_acceleration": 200, 
+            "straight_acceleration": 0, 
             "turn_rate": 300, 
-            "turn_acceleration": 100
+            "turn_acceleration": 0
         },
         "medidas": {
             "casilla": 275,
@@ -25,8 +25,8 @@
         },
         "mqtt": {
             "port": 1883,
-            "password": "",
-            "brokerIP": ""
+            "password": "00280549",
+            "brokerIP": "192.168.0.140"
         },
         "relaciones": {
             "5": "arriba", 
