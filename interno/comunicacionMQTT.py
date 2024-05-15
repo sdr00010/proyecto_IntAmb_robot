@@ -21,7 +21,7 @@ class ControladorMQTT:
     client = None
     controlador = None
 
-    def __init__(controlador):
+    def __init__(self, controlador):
         
         os.system('hostname > /dev/shm/hostname.txt')
         file = open('/dev/shm/hostname.txt', 'r')
@@ -41,7 +41,7 @@ class ControladorMQTT:
     # métodos privados
         
     # procesar el mensaje de pedido
-    def __procesar_pedido(pedido_decoded):
+    def __procesar_pedido(self, pedido_decoded):
         caminos = pedido_decoded.strip('"').split(";")
         camino_inicio = [int(x) for x in (caminos[0].split(","))]
         camino_final = [int(x) for x in (caminos[1].split(","))]
@@ -50,15 +50,15 @@ class ControladorMQTT:
     # métodos públicos
 
     # llega un mensaje
-    def on_message(topic, msg):
+    def on_message(self, topic, msg):
         pedido_decoded = str(msg.decode())
         pedido = self.__procesar_pedido(pedido_decoded)
         self.controlador.meter_en_cola(pedido)
 
-    def on_disconnect():
+    def on_disconnect(self):
         print("Desconectado del Broker MQTT")
         
-    def publicar_mensaje(topic, mensaje):
+    def publicar_mensaje(self, topic, mensaje):
         self.client.publish(topic, mensaje.encode())
         
         

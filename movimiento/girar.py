@@ -33,7 +33,7 @@ class ControladorGiro:
         # corregir el angulo: giroscopio
         self.robot.drive.stop()
         while self.robot.gyroSensor.angle() < destino:
-            self.robot.left_motor.run(200)
+            self.robot.left_motor.run(100)
     
     def __girar_izquierda(self):
         # ángulos: actual y destino
@@ -44,7 +44,7 @@ class ControladorGiro:
         # corregir el angulo: giroscopio
         self.robot.drive.stop()
         while self.robot.gyroSensor.angle() > destino:
-            self.robot.right_motor.run(200)
+            self.robot.right_motor.run(100)
     
     def __girar_media_vuelta(self):
         # ángulos: actual y destino
@@ -55,7 +55,7 @@ class ControladorGiro:
         # corregir el angulo: giroscopio
         self.robot.drive.stop()
         while self.robot.gyroSensor.angle() < destino:
-            self.robot.left_motor.run(200)
+            self.robot.left_motor.run(140)
     
     # métodos públicos
     

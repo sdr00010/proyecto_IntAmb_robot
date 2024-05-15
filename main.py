@@ -26,74 +26,67 @@ from movimiento.girar import ControladorGiro
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Crear el objetos
-control = utils.Controlador()
-robot = utils.Robot(
-    control.CONFIG["parametros"]["robot"]["wheel_diameter"],
-    control.CONFIG["parametros"]["robot"]["axle_track"],
-    control.CONFIG["parametros"]["robot"]["straight_speed"],
-    control.CONFIG["parametros"]["robot"]["straight_acceleration"],
-    control.CONFIG["parametros"]["robot"]["turn_rate"],
-    control.CONFIG["parametros"]["robot"]["turn_acceleration"]
-)
+control = Controlador()
+robot = Robot()
 ControladorMovimiento = ControladorMovimiento(robot)
 ControladorGiro = ControladorGiro(robot)
-ControladorMQTT = ControladorMQTT(control)
+# ControladorMQTT = ControladorMQTT(control)
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-"""
-    # Configuracion de la comunicación mqtt
 
-    os.system('hostname > /dev/shm/hostname.txt')
-    file = open('/dev/shm/hostname.txt', 'r')
-    client_id = file.readline().rstrip('\n')
-    file.close()
-    os.system('rm /dev/shm/hostname.txt')
+# Configuracion de la comunicación mqtt
 
-    mqtt_broker = '192.168.171.45' # cambiar cada dia
-    mqtt_password = 'swifi4680'
-    mqtt_port = 1883
+os.system('hostname > /dev/shm/hostname.txt')
+file = open('/dev/shm/hostname.txt', 'r')
+client_id = file.readline().rstrip('\n')
+file.close()
+os.system('rm /dev/shm/hostname.txt')
 
-    mqtt_client = MQTTClient(client_id, mqtt_broker, port=mqtt_port, password=mqtt_password)
+mqtt_broker = control.CONFIG["parametros"]["mqtt"]["brokerIP"]
+mqtt_password = control.CONFIG["parametros"]["mqtt"]["password"]
+mqtt_port = control.CONFIG["parametros"]["mqtt"]["port"]
 
-    MQTT_Topic_Mapa = 'map'
-    MQTT_Topic_Pedido = 'equipoD/pedido'
-    MQTT_Topic_Posicion = 'equipoD/posicion'
-    MQTT_Topic_Finalizacion = 'equipoD/finalizacion'
+mqtt_client = MQTTClient(client_id, mqtt_broker, port=mqtt_port, password=mqtt_password)
+
+MQTT_Topic_Mapa = 'map'
+MQTT_Topic_Pedido = 'equipoD/pedido'
+MQTT_Topic_Posicion = 'equipoD/posicion'
+MQTT_Topic_Finalizacion = 'equipoD/finalizacion'
 
 
-    # subcribirse a los topics
-    def on_connect():
-        print("Conectado al Broker MQTT")
-        mqtt_client.subscribe(MQTT_Topic_Pedido)
-        mqtt_client.check_msg()
+# subcribirse a los topics
+def on_connect():
+    print("Conectado al Broker MQTT")
+    mqtt_client.subscribe(MQTT_Topic_Pedido)
+    mqtt_client.check_msg()
 
-    # procesar el mensaje de pedido
-    def procesar_pedido(pedido_decoded):
-        caminos = pedido_decoded.strip('"').split(";")
-        camino_inicio = [int(x) for x in (caminos[0].split(","))]
-        camino_final = [int(x) for x in (caminos[1].split(","))]
-        return [camino_inicio, camino_final]
+# procesar el mensaje de pedido
+def procesar_pedido(pedido_decoded):
+    caminos = pedido_decoded.strip('"').split(";")
+    camino_inicio = [int(x) for x in (caminos[0].split(","))]
+    camino_final = [int(x) for x in (caminos[1].split(","))]
+    return [camino_inicio, camino_final]
 
-    # llega un mensaje
-    def on_message(topic, msg):
-        print("Received message: " + str(msg.decode()) + " from topic: " + str(topic))
-        # comprobar topic
-        if (MQTT_Topic_Pedido in str(topic)):
-            pedido_decoded = str(msg.decode())
-            pedido = procesar_pedido(pedido_decoded)
-            control.meter_en_cola(pedido)
+# llega un mensaje
+def on_message(topic, msg):
+    print("Received message: " + str(msg.decode()) + " from topic: " + str(topic))
+    # comprobar topic
+    if (MQTT_Topic_Pedido in str(topic)):
+        pedido_decoded = str(msg.decode())
+        pedido = procesar_pedido(pedido_decoded)
+        control.meter_en_cola(pedido)
 
-    # desconcexion del broker
-    def on_disconnect():
-        print("Desconectado del Broker MQTT")
-        
-    # conexión
-    mqtt_client.set_callback(on_message)
-    mqtt_client.connect()
-    on_connect()
-    robot.robot.speaker.beep()
-"""
+# desconcexion del broker
+def on_disconnect():
+    print("Desconectado del Broker MQTT")
+    
+# conexión
+mqtt_client.set_callback(on_message)
+mqtt_client.connect()
+on_connect()
+robot.robot.speaker.beep()
+
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -101,16 +94,6 @@ ControladorMQTT = ControladorMQTT(control)
 # control.meter_en_cola([[7, 12, 11, 16, 15], [16, 11, 12, 13, 18, 23, 28, 33, 34]])
 
 # MAIN
-
-MQTT_Topic_Mapa = 'map'
-MQTT_Topic_Pedido = 'equipoD/pedido'
-MQTT_Topic_Posicion = 'equipoD/posicion'
-MQTT_Topic_Finalizacion = 'equipoD/finalizacion'
-
-# conexión
-ControladorMQTT.client.connect()
-ControladorMQTT.on_connect()
-robot.robot.speaker.beep()
 
 # tarea: reparto de pedidos
 try:
@@ -123,30 +106,38 @@ try:
                 for j, casilla in enumerate(camino):
                     # 1. Comprobar la orientacion
                     correcto, deseado = control.comprobar_orientacion(robot.casilla_actual, casilla, robot.orientacion)
+                    print(correcto, deseado)
                     if (not correcto): 
                         giro = control.corregir_orientacion(robot.orientacion, deseado)
                         # Girar robot
-                        ControladorGiro.eleccion_giro(robot, giro)
+                        ControladorGiro.eleccion_giro(giro)
                         robot.orientacion = deseado
+                        print("girado")
                     # 2. Avanzar a la siquiente casilla
                     if ( not (i == 1 and j == len(camino)-1)): # no es el destino
                         if ( (i == 0 and j == len(camino)-1) ): # coger el paquete
                             ControladorMovimiento.recoger_paquete()
                         else: # continuar con el camino
-                            ControladorMovimiento.adelante_casillas(1)
+                            print("avanzar casilla")
+                            ControladorMovimiento.avanzar_casillas(1)
+                            
                         robot.casilla_actual = casilla
+                        
                         # publicar posicion: odometría
-                        ControladorMQTT.publicar_mensaje(MQTT_Topic_Posicion, str(robot.casilla_actual))
+                        mqtt_client.publish(MQTT_Topic_Posicion, str(robot.casilla_actual).encode())
+                        # ControladorMQTT.publicar_mensaje(MQTT_Topic_Posicion, str(robot.casilla_actual))
             # Entregar paquete
             ControladorMovimiento.entregar_paquete()
             robot.robot.speaker.beep()
             # publicar finalización
-            ControladorMQTT.publicar_mensaje(MQTT_Topic_Finalizacion, "finalizado")
+            mqtt_client.publish(MQTT_Topic_Finalizacion, "finalizado".encode())
+            # ControladorMQTT.publicar_mensaje(MQTT_Topic_Finalizacion, "finalizado")
         else:
             # Esperar a un nuevo pedido
             robot.drive.stop()
-            ControladorMQTT.client.check_msg()
-            time.sleep(2)
+            time.sleep(4)
+            mqtt_client.check_msg()
+            
             
 except KeyboardInterrupt:
     ControladorMQTT.on_disconnect()

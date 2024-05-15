@@ -21,34 +21,29 @@ class Robot:
     orientacion = ""        # arriba, derecha, abajo, izquierda
     casilla_actual = 0 
     # Robot
-    robot = None
-    left_motor = None
-    right_motor = None
-    pala_motor = None
-    drive = None
-    gyroSensor = None
+    robot = EV3Brick()
+    # motores
+    left_motor = Motor(Port.A)  # motor rueda izquierda
+    right_motor = Motor(Port.D)  # motor rueda izquierda
+    pala_motor = Motor(Port.B)  # motor rueda izquierda
+    gyroSensor = GyroSensor(Port.S1)
+    # drive: movimiento
+    drive = DriveBase(  
+                        left_motor, 
+                        right_motor, 
+                        wheel_diameter=55, 
+                        axle_track=120
+                    )
+    # resetear los ángulos
+    gyroSensor.reset_angle(0)
+    pala_motor.reset_angle(0)
+
     
     # Constructor
-    def __init__(self, wheel_diameter, axle_track, straight_speed, straight_acceleration, turn_rate, turn_acceleration):
+    def __init__(self):
         self.orientacion = "derecha" 
         self.casilla_actual = 30 # abajo a la izquierda
-        self.robot = EV3Brick()
-        # motores
-        self.left_motor = Motor(Port.A)  # motor rueda izquierda
-        self.right_motor = Motor(Port.D)  # motor rueda izquierda
-        self.pala_motor = Motor(Port.B)  # motor rueda izquierda
-        self.gyroSensor = GyroSensor(Port.S1)
-        # drive: movimiento
-        self.drive = DriveBase(  
-                                self.left_motor, 
-                                self.right_motor, 
-                                wheel_diameter=wheel_diameter, 
-                                axle_track=axle_track,
-                            )
-        self.drive.settings(straight_speed=straight_speed, straight_acceleration=straight_acceleration, turn_rate=turn_rate, turn_acceleration=turn_acceleration)
-        # resetear los ángulos
-        self.gyroSensor.reset_angle(0)
-        self.pala_motor.reset_angle(0)
+
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 

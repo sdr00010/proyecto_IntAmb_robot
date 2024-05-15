@@ -11,12 +11,12 @@
         "medidas": {
             "casilla": 275,
             "al_paquete": 170,
-            "recolocar_paquete": 50
+            "recolocar_paquete": 90
         },
         "giros": {
             "derecha": 88,
-            "izquierda": -88,
-            "vuelta": 176
+            "izquierda": -87,
+            "vuelta": 178
         },
         "pala": {
             "velocidad": 500,
@@ -26,7 +26,7 @@
         "mqtt": {
             "port": 1883,
             "password": "00280549",
-            "brokerIP": "192.168.0.140"
+            "brokerIP": "192.168.0.110"
         },
         "relaciones": {
             "5": "arriba", 

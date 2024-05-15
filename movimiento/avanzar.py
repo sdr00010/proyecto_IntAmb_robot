@@ -24,13 +24,14 @@ class ControladorMovimiento:
         self.robot = robot
         self.controlador = Controlador()
     # métodos privados
-    def __avanzar_adelante(self, distancia: float):
-        self.robot.drive.robot_db.straight(distancia)
-    def __avanzar_atras(self, distancia: float):
-        self.robot.drive.robot_db.straight(distancia*(-1))
+    def __avanzar_adelante(self, distancia: int):
+        self.robot.drive.straight(distancia)
+    def __avanzar_atras(self, distancia: int):
+        self.robot.drive.straight(distancia*(-1))
     # métodos públicos
     # 1. Avanzar N casillas hacia delante
     def avanzar_casillas(self, n: int):
+        print("dentro de avanzar casilla")
         self.__avanzar_adelante( n*(self.controlador.CONFIG["parametros"]["medidas"]["casilla"]) )
     # 2. Avanzar N casillas hacia atrás
     def retroceder_casillas(self, n: int):
@@ -46,19 +47,31 @@ class ControladorMovimiento:
         self.__avanzar_atras(self.controlador.CONFIG["parametros"]["medidas"]["al_paquete"])
         
     def recoger_paquete(self):
-        self.avanzar_al_paquete() # avanzar delante del paquete
-        wait(500) # esperar
+        self.avanzar_casillas(1)
+        wait(400) # esperar
         self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["bajar"]) # bajar la pala
-        wait(800) # esperar
-        self.avanzar_recolocar_paquete() # avanzar al medio de la casilla
+        wait(400) # esperar
         self.robot.pala_motor.stop()
+        
+        # self.avanzar_al_paquete() # avanzar delante del paquete
+        # wait(500) # esperar
+        # self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["bajar"]) # bajar la pala
+        # wait(800) # esperar
+        # self.avanzar_recolocar_paquete() # avanzar al medio de la casilla
+        # self.robot.pala_motor.stop()
 
     def entregar_paquete(self):
-        self.avanzar_al_paquete() # avanzar delante del paquete
-        self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["subir"])  # subir pala
-        wait(800) # esperar
-        self.retroceder_paquete() # retroceder a la anterior
+        self.avanzar_casillas(1)
+        wait(400) # esperar
+        self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["subir"]) # bajar la pala
+        wait(400) # esperar
         self.robot.pala_motor.stop()
+        
+        # self.avanzar_al_paquete() # avanzar delante del paquete
+        # self.robot.pala_motor.run_target(self.controlador.CONFIG["parametros"]["pala"]["velocidad"], self.controlador.CONFIG["parametros"]["pala"]["subir"])  # subir pala
+        # wait(500) # esperar
+        # self.retroceder_paquete() # retroceder a la anterior
+        # self.robot.pala_motor.stop()
     
     
 # funciones: avanzar hacia delante
